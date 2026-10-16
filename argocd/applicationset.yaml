@@ -1,0 +1,60 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: python-api
+  namespace: argocd
+
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+
+  generators:
+  - git:
+      repoURL: https://github.com/mrattdevops/gitops-advanced-deployment.git
+      revision: main
+      directories:
+      - path: environments/*
+
+  template:
+    metadata:
+      name: 'python-api-{{.path.basename}}'
+      labels:
+        app: python-api
+        environment: '{{.path.basename}}'
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/mrattdevops/gitops-advanced-deployment.git
+        targetRevision: main
+        path: charts/python-api
+
+        helm:
+          releaseName: 'python-api-{{.path.basename}}'
+          valueFiles:
+          - '../../environments/{{.path.basename}}/values.yaml'
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'gitops-{{.path.basename}}'
+
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+
+  templatePatch: |
+    {{- if eq .path.basename "dev" }}
+    spec:
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+    {{- else }}
+    metadata:
+      annotations:
+        deployment-policy: manual
+    {{- end }}
