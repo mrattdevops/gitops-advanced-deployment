@@ -1,7 +1,6 @@
 replicaCount: 1
-
 app:
   environment: dev
-
 image:
-  tag: "v1"
+  tag: "36f432a"
+  repository: docker.io/mrattdevops/gitops-advanced-app
