@@ -1,0 +1,34 @@
+
+replicaCount: 1
+
+image:
+  repository: docker.io/mrattdevops/gitops-advanced-app
+  pullPolicy: IfNotPresent
+  tag: "v1"
+
+serviceAccount:
+  create: true
+  automount: false
+
+service:
+  type: ClusterIP
+  port: 80
+
+containerPort: 8080
+
+app:
+  environment: dev
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+autoscaling:
+  enabled: false
+
+ingress:
+  enabled: false
