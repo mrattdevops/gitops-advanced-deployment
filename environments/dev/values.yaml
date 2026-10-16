@@ -4,3 +4,9 @@ app:
 image:
   tag: "36f432a"
   repository: docker.io/mrattdevops/gitops-advanced-app
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50

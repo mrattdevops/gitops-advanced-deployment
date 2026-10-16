@@ -4,3 +4,6 @@ app:
 image:
   tag: "36f432a"
   repository: docker.io/mrattdevops/gitops-advanced-app
+
+autoscaling:
+  enabled: false

@@ -1,4 +1,3 @@
-
 replicaCount: 1
 
 image:
@@ -29,6 +28,9 @@ resources:
 
 autoscaling:
   enabled: false
+  minReplicas: 1
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50
 
 ingress:
   enabled: false
