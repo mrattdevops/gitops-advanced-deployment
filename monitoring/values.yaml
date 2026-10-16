@@ -1,0 +1,95 @@
+# Lab 02 - Lightweight monitoring stack
+# Target: Rancher Desktop K3s / ARM64
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: true
+
+  adminPassword: ""
+  # Password will be supplied via Helm --set
+  # Do not commit a real password to Git.
+
+  persistence:
+    enabled: false
+
+  resources:
+    requests:
+      cpu: 25m
+      memory: 96Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+prometheusOperator:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 192Mi
+
+prometheus:
+  enabled: true
+
+  prometheusSpec:
+    replicas: 1
+    retention: 6h
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 768Mi
+
+    storageSpec:
+      emptyDir:
+        sizeLimit: 1Gi
+
+kubeStateMetrics:
+  enabled: true
+
+kube-state-metrics:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 40Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+nodeExporter:
+  enabled: true
+
+prometheus-node-exporter:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 24Mi
+    limits:
+      cpu: 100m
+      memory: 96Mi
+
+# K3s control-plane metrics may not be directly
+# accessible through the default chart endpoints.
+kubeEtcd:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+# Keep the default Kubernetes dashboards.
+defaultRules:
+  create: true
