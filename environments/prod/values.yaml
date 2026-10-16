@@ -2,5 +2,5 @@ replicaCount: 2
 app:
   environment: prod
 image:
-  tag: "rollback-test-invalid"
+  tag: "36f432a"
   repository: docker.io/mrattdevops/gitops-advanced-app
